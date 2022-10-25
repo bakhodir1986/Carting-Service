@@ -6,23 +6,30 @@ namespace Carting_Service.Controllers
 {
     public class CartController
     {
+        private readonly ICartManager cartManager;
+
+        public CartController(ICartManager cartManager)
+        {
+            this.cartManager = cartManager;
+        }
+
         [HttpGet(Name = "GetAllCarts")]
         public IEnumerable<Cart> Get()
         {
-            return CartManager.GetCarts();
+            return cartManager.GetCarts();
         }
 
         [HttpPost(Name = "AddCart")]
         [ValidateAntiForgeryToken]
         public void Add(Cart cart)
         {
-            CartManager.AddCart(cart);
+            cartManager.AddCart(cart);
         }
 
         [HttpDelete(Name = "RemoveCart")]
         public void Remove(string id)
         {
-            CartManager.RemoveCart(new Guid(id));
+            cartManager.RemoveCart(new Guid(id));
         }
     }
 }

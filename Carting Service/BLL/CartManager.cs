@@ -2,21 +2,31 @@
 
 namespace Carting_Service.BLL
 {
-    public class CartManager
+    public class CartManager : ICartManager
     {
-        public static IEnumerable<Cart> GetCarts()
+        private readonly ICartRepository cartRepository;
+
+        public CartManager(ICartRepository cartRepository)
         {
-            return null;
+            this.cartRepository = cartRepository;
+        }
+        public IEnumerable<Cart> GetCarts()
+        {
+            return cartRepository.GetCarts();
         }
 
-        public static void AddCart(Cart cart)
+        public void AddCart(Cart cart)
         {
+            if (cart == null) throw new ArgumentNullException("Cart item is invalid");
 
+            cart.Id = Guid.NewGuid();
+
+            cartRepository.AddCart(cart);
         }
 
-        public static void RemoveCart(Guid Id)
+        public void RemoveCart(Guid Id)
         {
-
+            cartRepository.RemoveCart(Id);
         }
     }
 }
