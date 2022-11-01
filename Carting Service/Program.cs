@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ICartRepository, CartRepository>();
-builder.Services.AddTransient<ICartManager, CartManager>();
+builder.Services.AddTransient<ICartManager, CartService>();
 
 var app = builder.Build();
 

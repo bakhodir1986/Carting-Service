@@ -1,35 +1,47 @@
 ﻿using Carting_Service.BLL;
-using Carting_Service.DAL;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Carting_Service.Controllers
 {
     public class CartController
     {
-        private readonly ICartManager cartManager;
+        private readonly ICartService cartService;
 
-        public CartController(ICartManager cartManager)
+        public CartController(ICartService cartService)
         {
-            this.cartManager = cartManager;
+            this.cartService = cartService;
         }
 
         [HttpGet(Name = "GetAllCarts")]
         public IEnumerable<Cart> Get()
         {
-            return cartManager.GetCarts();
+            return cartService.GetCarts();
         }
 
         [HttpPost(Name = "AddCart")]
         [ValidateAntiForgeryToken]
-        public void Add(Cart cart)
+        public Guid Add()
         {
-            cartManager.AddCart(cart);
+            return cartService.AddCart();
+        }
+
+        [HttpPost(Name = "AddCartItem")]
+        [ValidateAntiForgeryToken]
+        public void Add(Guid cartId, CartItem cartItem)
+        {
+            cartService.AddCartItem(cartId, cartItem);
         }
 
         [HttpDelete(Name = "RemoveCart")]
         public void Remove(string id)
         {
-            cartManager.RemoveCart(new Guid(id));
+            cartService.DeleteCart(new Guid(id));
+        }
+
+        [HttpDelete(Name = "RemoveCartItem")]
+        public void Remove(Guid cartId, int CartItemId)
+        {
+            cartService.DeleteCartItem(cartId, CartItemId);
         }
     }
 }
